@@ -40,24 +40,25 @@ class HomePage extends StatelessWidget {
               ],
             );
           },
-
           ),
-      
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            onPressed: () {
-               context.read<LoginProvider>().increment();
-               final count = context.read<LoginProvider>().count;
-               ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(
-                     content: Text("${StringConstants.counterIncrement} $count"),
-                     duration: Duration(seconds: 2),
-                   )
-               );
-            },
-            child: Icon(Icons.add),
+          Consumer<LoginProvider>(builder: (context, loginProvider, child) {
+                return FloatingActionButton(
+                    backgroundColor: loginProvider.isFibonacciMode ? Colors.green : Colors.teal,
+                    onPressed: () async {
+                      final value = await context.read<LoginProvider>().increment();
+                      final count = context.read<LoginProvider>().count;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: loginProvider.isFibonacciMode ?
+                            Text("${StringConstants.counterIncrementFib} $value") :
+                            Text("${StringConstants.counterIncrementNormal} $count"),
+                            duration: Duration(seconds: 2), ));
+                      },
+                    child: Icon(Icons.add, color: Colors.white,));
+             }
           ),
           SizedBox(height: 10),
           FloatingActionButton(
@@ -73,6 +74,27 @@ class HomePage extends StatelessWidget {
             child: Icon(Icons.restart_alt),
           ),
           SizedBox(height: 10),
+          TextButton(onPressed: () {
+            context.read<LoginProvider>().toggleCounter();
+            },
+              child: Consumer<LoginProvider>(builder: (context, loginProvider, child) {
+                return Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: loginProvider.isFibonacciMode ? Colors.green : Colors.teal,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        loginProvider.isFibonacciMode ? "Fibonacci" : "Normal",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                );
+              }
+              )
+          ),
           TextButton(onPressed: () async {
             final value = await context.read<LoginProvider>().computeSum();
             ScaffoldMessenger.of(context).showSnackBar(

@@ -7,15 +7,30 @@ import '../../Core/Mixins/logger_mixin.dart';
 class LoginProvider extends ChangeNotifier with LoggerMixin {
   int count = 0;
   bool isLoading = false;
+  bool isFibonacciMode = false;
 
-  void increment () {
-    count++;
-    log("Counter incremented to $count");
+  Future<int> increment () async {
+    if (isFibonacciMode) {
+      final currentValue = count;
+      final next = await Isolate.run(() => nextFibonacciIsolate(currentValue));
+      log("Fibonacci mode: $count → $next");
+      count = next;
+    }
+    else {
+      count++;
+      log("Counter incremented to $count");
+    }
     notifyListeners();
+    return count;
   }
   void reset() {
     count = 0;
     log("Counter reset to 0");
+    notifyListeners();
+  }
+
+  void toggleCounter() {
+    isFibonacciMode = !isFibonacciMode;
     notifyListeners();
   }
 
