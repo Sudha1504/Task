@@ -24,7 +24,11 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Counter value: ${loginProvider.count}")
+                      Text("Counter value: ${loginProvider.count}"),
+                      SizedBox(height: 10),
+                      Text("Current Streak: ${loginProvider.currentStreak}"),
+                      SizedBox(height: 10),
+                      Text("Highest Streak: ${loginProvider.highestStreak}"),
                     ],
                   ),
                 ),
