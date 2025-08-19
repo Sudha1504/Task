@@ -16,6 +16,12 @@ class SumNumbersUseCase {
     }
     return b;
   }
+
+  int factorialTail(int n, int acc) {
+    if(n==0) return acc;
+    return factorialTail(n-1, acc * n);
+  }
+
 }
 
 int sumNumbersIsolate(int n) {
@@ -24,4 +30,8 @@ int sumNumbersIsolate(int n) {
 
 int nextFibonacciIsolate(int n) {
   return SumNumbersUseCase().fibonacciNumbers(n);
+}
+
+int factorialTailIsolate(int n, int acc){
+  return SumNumbersUseCase().factorialTail(n, acc);
 }

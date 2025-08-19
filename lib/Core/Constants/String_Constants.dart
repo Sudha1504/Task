@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class StringConstants {
   static const counterReset = "Counter Reset";
   static const counterIncrementFib = "Counter Incremented by Fibonacci Mode";

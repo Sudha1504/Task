@@ -83,4 +83,19 @@ class LoginProvider extends ChangeNotifier with LoggerMixin {
 
     return result;
   }
+
+  Future<int> calcultateFactorial() async {
+    isLoading = true;
+    log("Starting sum calculation for 1 to $count");
+    notifyListeners();
+
+    final currentCount = count;
+    final result = await Isolate.run(() => factorialTailIsolate(currentCount, 1));
+
+    isLoading = false;
+    log("Finished Factorial calculation. Result: $result");
+    notifyListeners();
+
+    return result;
+  }
 }

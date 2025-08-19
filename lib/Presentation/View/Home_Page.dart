@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:counter_task/Core/Constants/String_Constants.dart';
 import 'package:counter_task/Presentation/ViewModel/login_view_model.dart';
 import 'package:flutter/material.dart';
@@ -99,46 +97,78 @@ class HomePage extends StatelessWidget {
               }
               )
           ),
-          TextButton(onPressed: () async {
-            final value = await context.read<LoginProvider>().computeSum();
-            ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Sum from 1 to ${context.read<LoginProvider>().count}: $value"),
-                      duration: Duration(seconds: 2),
-                    )
-                  );
-          },
-           child: Consumer<LoginProvider>(
-               builder: (context, loginProvider, child) {
-                  return Container(
-                         height: 50,
-                         width: 100,
-                         decoration: BoxDecoration(
+          Consumer<LoginProvider>(
+              builder: (context, loginProvider, child) {
+                return TextButton(
+                    onPressed: loginProvider.isLoading ? null : () async {
+                      final value = await context
+                          .read<LoginProvider>()
+                          .computeSum();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Sum from 1 to ${context
+                                .read<LoginProvider>()
+                                .count}: $value"),
+                            duration: Duration(seconds: 2),
+                          )
+                      );
+                    },
+                    child: Container(
+                        height: 50,
+                        width: 100,
+                        decoration: BoxDecoration(
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                    child: Center(
-                      child: loginProvider.isLoading ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.green,
-                          strokeWidth: 2,
-                        ),
-                      ) : Text("Calculate Sum", style: TextStyle(color: Colors.white, fontSize: 13))
+                        child: Center(
+                            child: loginProvider.isLoading ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.green,
+                                strokeWidth: 2,
+                              ),
+                            ) : Text("Calculate Sum", style: TextStyle(
+                                color: Colors.white, fontSize: 13))
+                        )
                     )
-                  );
+                );
+              }),
+          Consumer<LoginProvider>(
+           builder: (context, loginProvider, child){
+            return TextButton(onPressed: loginProvider.isLoading ? null : ()
+            async {
+              final value = await context.read<LoginProvider>().calcultateFactorial();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Factorial of ${context.read<LoginProvider>().count} is: $value"),
+                    duration: Duration(seconds: 2),
+                  )
+              );
+            },
+                child: Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                        child: loginProvider.isLoading ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.green,
+                            strokeWidth: 2,
+                          ),
+                        ) : Text("Cal Factorial", style: TextStyle(color: Colors.white, fontSize: 13))
+                    )
+                )
+            );
            }
-           )
           )
         ]
       )
     );
-
-
-
-
-
-
   }
 }
