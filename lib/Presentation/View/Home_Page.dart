@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:counter_task/Core/Constants/String_Constants.dart';
+import 'package:counter_task/Presentation/View/List_Screen.dart';
 import 'package:counter_task/Presentation/ViewModel/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,14 +14,45 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Builder(
+            builder: (context) =>  IconButton(onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            }, icon: const Icon(Icons.menu, color: Colors.white)),
+          ),
+        ],
         backgroundColor: Colors.blueGrey,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text("Increment Counter App",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),),),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),),
+      ),
+        endDrawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              SizedBox(
+                height: 120,
+                child: DrawerHeader(
+                    decoration: BoxDecoration(
+                  color: Colors.blueGrey
+                ),child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24))),
+              ), 
+              ListTile(
+                leading: Icon(Icons.list),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ListScreen()));
+                },
+                title: Text("List Screen"),
+              )
+            ],
+          ),
+        ),
           body: Consumer<LoginProvider>(builder: (context, loginProvider, child) {
             return Stack(
               children: [
-                 Center(
+                Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -46,6 +78,7 @@ class HomePage extends StatelessWidget {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+<<<<<<< Updated upstream
           FloatingActionButton(
             onPressed: () {
                context.read<LoginProvider>().increment();
@@ -58,6 +91,24 @@ class HomePage extends StatelessWidget {
                );
             },
             child: Icon(Icons.add),
+=======
+          Consumer<LoginProvider>(builder: (context, loginProvider, child) {
+                return FloatingActionButton(
+                  heroTag: "HomeFab",
+                    backgroundColor: loginProvider.isFibonacciMode ? Colors.green : Colors.teal,
+                    onPressed: () async {
+                      final value = await context.read<LoginProvider>().increment();
+                      final count = context.read<LoginProvider>().count;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: loginProvider.isFibonacciMode ?
+                            Text("${StringConstants.counterIncrementFib} $value") :
+                            Text("${StringConstants.counterIncrementNormal} $count"),
+                            duration: Duration(seconds: 2), ));
+                      },
+                    child: Icon(Icons.add, color: Colors.white,));
+             }
+>>>>>>> Stashed changes
           ),
           SizedBox(height: 10),
           FloatingActionButton(

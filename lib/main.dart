@@ -1,12 +1,19 @@
 import 'package:counter_task/Presentation/View/Home_Page.dart';
+import 'package:counter_task/Presentation/ViewModel/list_view_model.dart';
 import 'package:counter_task/Presentation/ViewModel/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-      ChangeNotifierProvider(create: (context) => LoginProvider(),
-       child: const MyApp()));
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => LoginProvider()),
+          ChangeNotifierProvider(create: (context) => ListProvider()),
+        ],
+         child: const MyApp()
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
